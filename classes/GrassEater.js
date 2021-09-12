@@ -1,10 +1,8 @@
-class GrassEater {
+class GrassEater extends LivingCreature {
 
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
         this.energy = 10;
-        this.directions = [];
         grassEaters.push(this);
         matrix[y][x] = 2;
     }
@@ -24,15 +22,7 @@ class GrassEater {
 
     chooseCell(number) {
         this.updateDirections();
-        let found = [];
-        for (const i in this.directions) {
-            let x = this.directions[i][0];
-            let y = this.directions[i][1];
-            if (!(x >= 0 && y >= 0 && x < matrix.length && y < matrix.length)) continue;
-            if (matrix[y][x] != number) continue;
-            found.push(this.directions[i]);
-        }
-        return found;
+        return super.chooseCell(number);
     }
 
     start() {
