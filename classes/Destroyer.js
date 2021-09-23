@@ -1,4 +1,4 @@
-class Destroyer {
+module.exports = class Destroyer {
 
     constructor(y) {
         this.y = y;

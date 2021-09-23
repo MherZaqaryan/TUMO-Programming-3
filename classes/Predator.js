@@ -1,4 +1,6 @@
-class Predator extends LivingCreature {
+const LivingCreature = require('./LivingCreature');
+
+module.exports = class Predator extends LivingCreature {
 
     constructor(x, y) {
         super(x, y);
@@ -8,7 +10,7 @@ class Predator extends LivingCreature {
     }
 
     updateDirections() {
-        this.directions = [
+        this.directions = [ 
             [this.x - 1, this.y - 1],
             [this.x, this.y - 1],
             [this.x + 1, this.y - 1],

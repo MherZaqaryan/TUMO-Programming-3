@@ -1,4 +1,4 @@
-class Grenade {
+module.exports = class Grenade {
 
     constructor(x, y) {
         this.x = x;
