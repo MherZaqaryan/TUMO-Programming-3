@@ -7,6 +7,7 @@ module.exports = class Predator extends LivingCreature {
         this.energy = 20;
         predators.push(this);
         matrix[y][x] = 3;
+        gameData.addPredator();
     }
 
     updateDirections() {

@@ -1,3 +1,4 @@
+const GameData = require('./GameData');
 const LivingCreature = require('./LivingCreature');
 
 module.exports = class Grass extends LivingCreature {
@@ -7,6 +8,7 @@ module.exports = class Grass extends LivingCreature {
         this.multiplay = 0;
         matrix[y][x] = 1;
         grasses.push(this);
+        gameData.addGrass();
     }
 
     mult() {

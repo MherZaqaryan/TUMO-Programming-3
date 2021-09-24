@@ -2,16 +2,15 @@ const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+
 const GameData = require("./classes/GameData");
-
-const gameData = new GameData();
-
 var Grass = require('./classes/Grass');
 var GrassEater = require('./classes/GrassEater');
 var Predator = require('./classes/Predator');
 var Destroyer = require('./classes/Destroyer');
 var Grenade = require('./classes/Grenade');
 
+gameData = new GameData();
 matrix = [];
 grasses = [];
 grassEaters = [];

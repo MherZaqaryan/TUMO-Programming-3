@@ -7,6 +7,7 @@ module.exports = class GrassEater extends LivingCreature {
         this.energy = 10;
         grassEaters.push(this);
         matrix[y][x] = 2;
+        gameData.addGrassEater();
     }
 
     updateDirections() {

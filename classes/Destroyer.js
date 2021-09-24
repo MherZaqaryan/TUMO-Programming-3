@@ -13,6 +13,7 @@ module.exports = class Destroyer {
         this.cooldown = 20;
         this.time = 5;
         destroyers.push(this);
+        gameData.addDestroyer();
     }
 
     start() {

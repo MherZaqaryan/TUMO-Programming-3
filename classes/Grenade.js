@@ -27,6 +27,7 @@ module.exports = class Grenade {
             [this.x + 2, this.y + 2]
         ]
         grenades.push(this);
+        gameData.addGrenade();
     }
 
     start() {
