@@ -44,7 +44,6 @@ canvas {
     text-align: center;
 }
 
-h1,
-h3 {
-    padding: 5px;
+h1, h3 {
+    margin: 10px;
 }
