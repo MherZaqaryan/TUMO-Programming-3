@@ -2,10 +2,10 @@
   "name": "tumo-programming-3",
   "version": "1.0.0",
   "description": "Tumo Programming 3 Final Project",
-  "main": "server.js",
+  "main": "./src/server.js",
   "scripts": {
     "test": "node server",
-    "start": "node server.js"
+    "start": "node ./src/server.js"
   },
   "repository": {
     "type": "git",

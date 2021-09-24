@@ -3,12 +3,12 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-const GameData = require("./src/classes/GameData");
-var Grass = require('./src/classes/Grass');
-var GrassEater = require('./src/classes/GrassEater');
-var Predator = require('./src/classes/Predator');
-var Destroyer = require('./src/classes/Destroyer');
-var Grenade = require('./src/classes/Grenade');
+const GameData = require("./classes/GameData");
+var Grass = require('./classes/Grass');
+var GrassEater = require('./classes/GrassEater');
+var Predator = require('./classes/Predator');
+var Destroyer = require('./classes/Destroyer');
+var Grenade = require('./classes/Grenade');
 
 gameData = new GameData();
 matrix = [];
@@ -21,7 +21,7 @@ grenades = [];
 app.use(express.static("."));
 
 app.get('/', function(req, res) {
-    res.redirect('index.html');
+    res.redirect('./index.html');
 }); 
 
 server.listen(3000, function() {
