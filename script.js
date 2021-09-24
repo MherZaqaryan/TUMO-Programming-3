@@ -1,9 +1,14 @@
-
 function setup() {
 
     var socket = io();
     var matrix = [];
     var side = 10;
+
+    const grassCount = document.getElementById('grassCount');
+    const grassEaterCount = document.getElementById('grassEaterCount');
+    const predatorCount = document.getElementById('predatorCount');
+    const destroyerCount = document.getElementById('destroyerCount');
+    const grenadeCount = document.getElementById('grenadeCount');
 
     socket.on("data", drawCreatures);
 
@@ -11,6 +16,13 @@ function setup() {
 
         matrix = data.matrix;
         createCanvas(matrix.length * side + 1, matrix.length * side + 1);
+
+        grassCount.innerText = data.gameData.grassCount;
+        grassEaterCount.innerText = data.gameData.grassEaterCount;
+        predatorCount.innerText = data.gameData.predatorCount;
+        destroyerCount.innerText = data.gameData.destroyerCount;
+        grenadeCount.innerText = data.gameData.grenadeCount;
+
         background('#acacac');
 
         for (let y = 0; y < matrix.length; y++) {
@@ -27,9 +39,4 @@ function setup() {
 
     }
 
-}
-
-
-function draw() {
-    
 }
