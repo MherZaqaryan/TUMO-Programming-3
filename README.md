@@ -18,4 +18,4 @@ After that you can run the server by running.
 npm start
 ```
 
-Server will start on Port 3000
+Server will start on port 3000
