@@ -2,13 +2,16 @@ const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+const fs = require("fs");
 
 const GameData = require("./classes/GameData");
-var Grass = require('./classes/Grass');
-var GrassEater = require('./classes/GrassEater');
-var Predator = require('./classes/Predator');
-var Destroyer = require('./classes/Destroyer');
-var Grenade = require('./classes/Grenade');
+const Grass = require('./classes/Grass');
+const GrassEater = require('./classes/GrassEater');
+const Predator = require('./classes/Predator');
+const Destroyer = require('./classes/Destroyer');
+const Grenade = require('./classes/Grenade');
+const SeasonTheme = require('./classes/Season');
+const GameManager = require('./classes/GameManager');
 
 gameData = new GameData();
 matrix = [];
@@ -17,6 +20,22 @@ grassEaters = [];
 predators = [];
 destroyers = [];
 grenades = [];
+
+seasonIndex = 0;
+
+seasonThemes = [
+    new SeasonTheme("#0ac900","#e1ff00","#ff0066","#0341fc","#fc7703"), // Spring
+    new SeasonTheme("#00ff2a","#ffd000","#fc0303","#0341fc","#fc7703"), // Summer
+    new SeasonTheme("#b3ee3a","#f4fc03","#fc0303","#0341fc","#fc7703"), // Autumn
+    new SeasonTheme("#fff0f0","#f4fc03","#fc0303","#0341fc","#fc7703") // Winter
+];
+
+gameManagers = [
+    new GameManager(2),
+    new GameManager(3),
+    new GameManager(1),
+    new GameManager(0)
+];
 
 app.use(express.static("."));
 
@@ -72,6 +91,14 @@ function createMatrix(size, grassesAmount, grassEatersAmount, predatorsAmount, d
 
 }
 
+global.getSeasonTheme = function() {
+    return seasonThemes[seasonIndex];
+}
+
+global.getGameManager = function() {
+    return gameManagers[seasonIndex];
+}
+
 createMatrix(60, 100, 30, 20, 1, 5);
 
 function game() {
@@ -84,11 +111,26 @@ function game() {
 
     let data = {
         matrix: matrix,
-        gameData: gameData
-    }
+        gameData: gameData,
+        seasonTheme: global.getSeasonTheme()
+    };
 
     io.sockets.emit("data", data);
-
+    
 }
 
-setInterval(game, 250)
+function writeStatistics() {
+    fs.writeFile("statistics.json", JSON.stringify(gameData), function() {
+        console.log("Statistics Updated.");
+    });
+}
+
+function changeSeason() {
+    seasonIndex++
+    if (seasonIndex >= seasonThemes.length) seasonIndex = 0;
+    console.log("Season Changed To " + seasonIndex);
+}
+
+setInterval(game, 250);
+setInterval(writeStatistics, 250*60);
+setInterval(changeSeason, 5000);

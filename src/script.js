@@ -3,6 +3,7 @@ function setup() {
     var socket = io();
     var matrix = [];
     var side = 10;
+    var season;
 
     const grassCount = document.getElementById('grassCount');
     const grassEaterCount = document.getElementById('grassEaterCount');
@@ -12,9 +13,14 @@ function setup() {
 
     socket.on("data", drawCreatures);
 
+    // socket.on("season", function changeSeason(data) {
+    //     season = data;
+    // });
+
     function drawCreatures(data) {
 
         matrix = data.matrix;
+        season = data.seasonTheme;
         createCanvas(matrix.length * side + 1, matrix.length * side + 1);
 
         grassCount.innerText = data.gameData.grassCount;
@@ -23,16 +29,16 @@ function setup() {
         destroyerCount.innerText = data.gameData.destroyerCount;
         grenadeCount.innerText = data.gameData.grenadeCount;
 
-        background('#acacac');
+        background('#8f8f8f');
 
         for (let y = 0; y < matrix.length; y++) {
             for (let x = 0; x < matrix.length; x++) {
-                if (matrix[y][x] == 0) fill("#acacac");
-                else if (matrix[y][x] == 1) fill("#0ac900");
-                else if (matrix[y][x] == 2) fill("#e1ff00");
-                else if (matrix[y][x] == 3) fill("#ff0066");
-                else if (matrix[y][x] == 4) fill("#0341fc");
-                else if (matrix[y][x] == 5) fill("#fc7703");
+                if (matrix[y][x] == 0) fill("#8f8f8f");
+                else if (matrix[y][x] == 1) fill(season.grassColor);
+                else if (matrix[y][x] == 2) fill(season.grassEaterColor);
+                else if (matrix[y][x] == 3) fill(season.predatorColor);
+                else if (matrix[y][x] == 4) fill(season.destroyerColor);
+                else if (matrix[y][x] == 5) fill(season.grenadeColor);
                 rect(x * side, y * side, side, side);
             }
         }

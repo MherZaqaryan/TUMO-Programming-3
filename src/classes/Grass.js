@@ -1,4 +1,3 @@
-const GameData = require('./GameData');
 const LivingCreature = require('./LivingCreature');
 
 module.exports = class Grass extends LivingCreature {
@@ -12,8 +11,10 @@ module.exports = class Grass extends LivingCreature {
     }
 
     mult() {
+        let multiplication = gameManagers[seasonIndex].grassMultiplication;
+        if (multiplication <= 0) return;
         this.multiplay++;
-        if (this.multiplay < 2) return;
+        if (this.multiplay < this.multiplication) return;
         let emptyCells = this.chooseCell(0);
         if (emptyCells.length > 0) {
             let randIndex = Math.round(Math.random() * (emptyCells.length - 1));
@@ -21,8 +22,8 @@ module.exports = class Grass extends LivingCreature {
             let y = emptyCells[randIndex][1];
             matrix[y][x] = 1;
             new Grass(x, y);
+            this.multiplay = 0;
         }
-        this.multiplay = 0;
     }
 
 }
