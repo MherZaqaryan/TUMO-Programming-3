@@ -1,4 +1,5 @@
 const LivingCreature = require('./LivingCreature');
+const random = require('./RandomUtil');
 
 module.exports = class Grass extends LivingCreature {
 
@@ -17,7 +18,7 @@ module.exports = class Grass extends LivingCreature {
         if (this.multiplay < this.multiplication) return;
         let emptyCells = this.chooseCell(0);
         if (emptyCells.length > 0) {
-            let randIndex = Math.round(Math.random() * (emptyCells.length - 1));
+            let randIndex = random(emptyCells.length - 1);
             let x = emptyCells[randIndex][0];
             let y = emptyCells[randIndex][1];
             matrix[y][x] = 1;

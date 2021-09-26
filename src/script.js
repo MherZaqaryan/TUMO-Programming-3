@@ -1,9 +1,9 @@
-function setup() {
+const socket = io();
+const side = 10;
+var matrix = [];
+var season;
 
-    var socket = io();
-    var matrix = [];
-    var side = 10;
-    var season;
+function setup() {
 
     const grassCount = document.getElementById('grassCount');
     const grassEaterCount = document.getElementById('grassEaterCount');
@@ -12,10 +12,6 @@ function setup() {
     const grenadeCount = document.getElementById('grenadeCount');
 
     socket.on("data", drawCreatures);
-
-    // socket.on("season", function changeSeason(data) {
-    //     season = data;
-    // });
 
     function drawCreatures(data) {
 
@@ -44,5 +40,9 @@ function setup() {
         }
 
     }
+    
+}
 
+function restart() {
+    socket.emit("restart");
 }

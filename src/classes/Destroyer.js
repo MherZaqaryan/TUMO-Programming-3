@@ -1,3 +1,5 @@
+const random = require("./RandomUtil");
+
 module.exports = class Destroyer {
 
     constructor(y) {
@@ -51,7 +53,7 @@ module.exports = class Destroyer {
     }
 
     mult() {
-        new Destroyer(Math.round(Math.random() * (matrix.length - 1)));
+        new Destroyer(random(matrix.length - 1));
         this.cooldown = 20;
     }
 

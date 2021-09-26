@@ -1,6 +1,10 @@
-module.exports = class Grenade {
+const LivingCreature = require('./LivingCreature');
+const random = require('./RandomUtil');
+
+module.exports = class Grenade extends LivingCreature {
 
     constructor(x, y) {
+        super(x, y);
         this.x = x;
         this.y = y;
         this.bursted = false;
@@ -47,10 +51,12 @@ module.exports = class Grenade {
     }
 
     mult() {
-        let x = Math.round(Math.random() * (matrix.length - 1));
-        let y = Math.round(Math.random() * (matrix.length - 1));
-        if (matrix[y][x] == 0) new Grenade(x, y);
-        else this.mult();
+        let cells = super.chooseCell(0, 1);
+        if (cells.length == 0) return;
+        let randIndex = random(cells.length - 1);
+        let x = cells[randIndex][0];
+        let y = cells[randIndex][1];
+        new Grenade(x, y);
     }
 
     remove() {

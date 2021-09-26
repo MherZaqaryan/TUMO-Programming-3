@@ -12,6 +12,7 @@ const Destroyer = require('./classes/Destroyer');
 const Grenade = require('./classes/Grenade');
 const SeasonTheme = require('./classes/Season');
 const GameManager = require('./classes/GameManager');
+const random = require('./classes/RandomUtil');
 
 gameData = new GameData();
 matrix = [];
@@ -55,36 +56,36 @@ function createMatrix(size, grassesAmount, grassEatersAmount, predatorsAmount, d
     }
 
     for (let i = 0; i < grassesAmount; i++) {
-        let x = Math.round(Math.random() * (size - 1));
-        let y = Math.round(Math.random() * (size - 1));
+        let x = random(size - 1);
+        let y = random(size - 1);
         if (matrix[y][x] == 0) new Grass(x, y);
         else i--;
     }
 
     for (let i = 0; i < grassEatersAmount; i++) {
-        let x = Math.round(Math.random() * (size - 1));
-        let y = Math.round(Math.random() * (size - 1));
+        let x = random(size - 1);
+        let y = random(size - 1);
         if (matrix[y][x] == 0) new GrassEater(x, y);
         else i--;
     }
 
     for (let i = 0; i < predatorsAmount; i++) {
-        let x = Math.round(Math.random() * (size - 1));
-        let y = Math.round(Math.random() * (size - 1));
+        let x = random(size - 1);
+        let y = random(size - 1);
         if (matrix[y][x] == 0) new Predator(x, y);
         else i--;
     }
 
     for (let i = 0; i < destroyersAmount; i++) {
-        let x = Math.round(Math.random() * (size - 1));
-        let y = Math.round(Math.random() * (size - 1));
-        if (matrix[y][x] == 0) new Destroyer(Math.round(Math.random() * (matrix.length - 1)));
+        let x = random(size - 1);
+        let y = random(size - 1);
+        if (matrix[y][x] == 0) new Destroyer(random(matrix.length - 1));
         else i--;
     }
 
     for (let i = 0; i < grenadesAmount; i++) {
-        let x = Math.round(Math.random() * (size - 1));
-        let y = Math.round(Math.random() * (size - 1));
+        let x = random(size - 1);
+        let y = random(size - 1);
         if (matrix[y][x] == 0) new Grenade(x, y);
         else i--;
     }
@@ -98,8 +99,6 @@ global.getSeasonTheme = function() {
 global.getGameManager = function() {
     return gameManagers[seasonIndex];
 }
-
-createMatrix(60, 100, 30, 20, 1, 5);
 
 function game() {
     
@@ -119,6 +118,26 @@ function game() {
     
 }
 
+io.on('connection', function (socket) {
+    createMatrix(60, 100, 30, 20, 1, 5);
+    socket.on("restart", restart);
+});
+
+function restart() {
+
+    gameData = new GameData();
+    matrix = [];
+    grasses = [];
+    grassEaters = [];
+    predators = [];
+    destroyers = [];
+    grenades = [];
+    createMatrix(60, 100, 30, 20, 1, 5);
+    game();
+    console.log("Game Restarted.");
+
+}
+
 function writeStatistics() {
     fs.writeFile("statistics.json", JSON.stringify(gameData), function() {
         console.log("Statistics Updated.");
@@ -131,6 +150,6 @@ function changeSeason() {
     console.log("Season Changed To " + seasonIndex);
 }
 
-setInterval(game, 250);
+setInterval(game, 100);
 setInterval(writeStatistics, 250*60);
 setInterval(changeSeason, 5000);

@@ -46,3 +46,11 @@ canvas {
 h1, h3 {
     margin: 10px;
 }
+
+.footer {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}

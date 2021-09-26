@@ -1,4 +1,5 @@
 const LivingCreature = require('./LivingCreature');
+const random = require('./RandomUtil');
 
 module.exports = class Predator extends LivingCreature {
 
@@ -48,7 +49,7 @@ module.exports = class Predator extends LivingCreature {
 
     move() {
         let emptyCells = this.chooseCell(0);
-        let randIndex = Math.round(Math.random() * (emptyCells.length - 1));
+        let randIndex = random(emptyCells.length - 1);
         let x = emptyCells[randIndex][0];
         let y = emptyCells[randIndex][1];
         matrix[y][x] = 3;
@@ -60,7 +61,7 @@ module.exports = class Predator extends LivingCreature {
 
     eat() {
         let foods = this.chooseCell(2);
-        let randIndex = Math.round(Math.random() * (foods.length - 1));
+        let randIndex = random(foods.length - 1);
         let x = foods[randIndex][0];
         let y = foods[randIndex][1];
         for (const i in grassEaters) {
@@ -77,7 +78,7 @@ module.exports = class Predator extends LivingCreature {
     mult() {
         if (this.energy < 30) return;
         var emptyCells = this.chooseCell(0);
-        var randIndex = Math.round(Math.random() * (emptyCells.length - 1));
+        var randIndex = random(emptyCells.length - 1);
         let x = emptyCells[randIndex][0];
         let y = emptyCells[randIndex][1];
         matrix[this.y][this.x] = 3;
