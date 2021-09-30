@@ -134,6 +134,15 @@ function restart() {
     grenades = [];
     createMatrix(60, 100, 30, 20, 1, 5);
     game();
+
+    let data = {
+        matrix: matrix,
+        gameData: gameData,
+        seasonTheme: global.getSeasonTheme()
+    };
+
+    io.sockets.emit("data", data);
+
     console.log("Game Restarted.");
 
 }
@@ -147,9 +156,13 @@ function writeStatistics() {
 function changeSeason() {
     seasonIndex++
     if (seasonIndex >= seasonThemes.length) seasonIndex = 0;
-    console.log("Season Changed To " + seasonIndex);
+    let seasonName = "Spring";
+    if (seasonIndex == 1) seasonName = "Summer";
+    if (seasonIndex == 2) seasonName = "Autumn";
+    if (seasonIndex == 3) seasonName = "Winter";
+    console.log("Season Changed To " + seasonName);
 }
 
-setInterval(game, 100);
+setInterval(game, 75);
 setInterval(writeStatistics, 250*60);
 setInterval(changeSeason, 5000);

@@ -1,26 +1,21 @@
-body {
-    font-family: 'Noto Sans', sans-serif !important;
-}
-
 canvas {
     display: block;
     margin: 10px auto 10px auto;
+    border: 1px solid #4d4d4d;
+    border-radius: 2px;
 }
 
 .header {
     text-align: center;
-    margin-bottom: 10px;
+    margin: 5px 0 15px 0;
 }
 
 .description {
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 25px;
-}
-
-.game {
-    width: 80%;
 }
 
 .game td,
@@ -53,4 +48,37 @@ h1, h3 {
     align-items: center;
     justify-content: center;
 
+}
+
+.event-button {
+    outline: none;
+    cursor: pointer;
+    background-color: #ffffff;
+    border: 1px solid #0095d9;
+    border-radius: 5px;
+    color: #0095d9;
+    padding: 5px;
+    margin: 3px 0;
+}
+
+.event-button:hover {
+    color: #ffffff;
+    background-color: #0095d9;
+}
+
+.event-button:active {
+    background-color: #005d88;
+}
+
+.events-container {
+
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 0 10px;
+
+}
+
+.game {
+    margin: 0 10px;
 }
