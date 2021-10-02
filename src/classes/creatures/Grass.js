@@ -1,5 +1,5 @@
 const LivingCreature = require('./LivingCreature');
-const random = require('./RandomUtil');
+const random = require('../util/Random');
 
 module.exports = class Grass extends LivingCreature {
 
@@ -7,7 +7,7 @@ module.exports = class Grass extends LivingCreature {
         super(x, y);
         this.multiplay = 0;
         matrix[y][x] = 1;
-        grasses.push(this);
+        creatures.addGrass(this);
         gameData.addGrass();
     }
 

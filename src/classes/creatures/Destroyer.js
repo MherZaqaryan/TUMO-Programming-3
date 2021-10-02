@@ -1,4 +1,4 @@
-const random = require("./RandomUtil");
+const random = require('../util/Random');
 
 module.exports = class Destroyer {
 
@@ -14,7 +14,7 @@ module.exports = class Destroyer {
         }
         this.cooldown = 20;
         this.time = 5;
-        destroyers.push(this);
+        creatures.addDestroyer(this);
         gameData.addDestroyer();
     }
 
@@ -44,9 +44,9 @@ module.exports = class Destroyer {
         for (const d in this.directions) {
             matrix[this.directions[d][1]][this.directions[d][0]] = 0;
         }
-        for (var i in destroyers) {
-            if (!(this.x == destroyers[i].x && this.y == destroyers[i].y)) continue;
-            destroyers.splice(i, 1);
+        for (var i in creatures.destroyers) {
+            if (!(this.x == creatures.destroyers[i].x && this.y == creatures.destroyers[i].y)) continue;
+            creatures.destroyers.splice(i, 1);
             break;
         }
         this.time = 5;
@@ -58,17 +58,17 @@ module.exports = class Destroyer {
     }
 
     removeObject(x, y) {
-        for (const i in grasses) {
-            if (!(grasses[i].x == x && grasses[i].y == y)) continue;
-            grasses.splice(i, 1);
+        for (const i in creatures.grasses) {
+            if (!(creatures.grasses[i].x == x && creatures.grasses[i].y == y)) continue;
+            creatures.grasses.splice(i, 1);
         }
-        for (const i in grassEaters) {
-            if (!(grassEaters[i].x == x && grassEaters[i].y == y)) continue;
-            grassEaters.splice(i, 1);
+        for (const i in creatures.grassEaters) {
+            if (!(creatures.grassEaters[i].x == x && creatures.grassEaters[i].y == y)) continue;
+            creatures.grassEaters.splice(i, 1);
         }
-        for (const i in predators) {
-            if (!(predators[i].x == x && predators[i].y == y)) continue;
-            predators.splice(i, 1);
+        for (const i in creatures.predators) {
+            if (!(creatures.predators[i].x == x && creatures.predators[i].y == y)) continue;
+            creatures.predators.splice(i, 1);
         }
     }
 

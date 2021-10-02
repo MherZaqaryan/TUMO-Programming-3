@@ -6,11 +6,18 @@ var season;
 function setup() {
 
     const weatherText = document.getElementById('weather');
+
     const grassCount = document.getElementById('grassCount');
     const grassEaterCount = document.getElementById('grassEaterCount');
     const predatorCount = document.getElementById('predatorCount');
     const destroyerCount = document.getElementById('destroyerCount');
     const grenadeCount = document.getElementById('grenadeCount');
+
+    const currentGrassCount = document.getElementById('currentGrassCount');
+    const currentGrassEaterCount = document.getElementById('currentGrassEaterCount');
+    const currentPredatorCount = document.getElementById('currentPredatorCount');
+    const currentDestroyerCount = document.getElementById('currentDestroyerCount');
+    const currentGrenadeCount = document.getElementById('currentGrenadeCount');
 
     socket.on("matrix", drawCreatures);
 
@@ -18,16 +25,24 @@ function setup() {
 
         matrix = data.matrix;
         season = data.seasonTheme;
+        creatures = data.creatures;
 
-        drawChart(data.gameData, season);
+        drawChart(data.chartForm, season);
         createCanvas(matrix.length * side + 1, matrix.length * side + 1);
 
         weatherText.innerText = "Season: " + data.seasonName;
+
         grassCount.innerText = data.gameData.grassCount;
         grassEaterCount.innerText = data.gameData.grassEaterCount;
         predatorCount.innerText = data.gameData.predatorCount;
         destroyerCount.innerText = data.gameData.destroyerCount;
         grenadeCount.innerText = data.gameData.grenadeCount;
+
+        currentGrassCount.innerText = creatures.grasses.length;
+        currentGrassEaterCount.innerText = creatures.grassEaters.length;
+        currentPredatorCount.innerText = creatures.predators.length;
+        currentDestroyerCount.innerText = creatures.destroyers.length;
+        currentGrenadeCount.innerText = creatures.grenades.length;
 
         background('#8f8f8f');
 
@@ -81,15 +96,15 @@ function setup() {
             .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
             .text(function(d) { 
                 switch (d.data.key) {
-                    case "grassCount":
+                    case "grass":
                         return "Grass";
-                    case "grassEaterCount":
+                    case "grassEater":
                         return "Grass Eater";
-                    case "predatorCount":
+                    case "predator":
                         return "Predator";
-                    case "destroyerCount":
+                    case "destroyer":
                         return "Destroyer";
-                    case "grenadeCount":
+                    case "grenade":
                         return "Grenade";
                     default:
                         return "Unknown";

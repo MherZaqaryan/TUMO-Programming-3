@@ -1,5 +1,5 @@
 const LivingCreature = require('./LivingCreature');
-const random = require('./RandomUtil');
+const random = require('../util/Random');
 
 module.exports = class Grenade extends LivingCreature {
 
@@ -30,7 +30,7 @@ module.exports = class Grenade extends LivingCreature {
             [this.x, this.y + 2],
             [this.x + 2, this.y + 2]
         ]
-        grenades.push(this);
+        creatures.addGrenade(this);
         gameData.addGrenade();
     }
 
@@ -67,9 +67,9 @@ module.exports = class Grenade extends LivingCreature {
             matrix[y][x] = 0;
         }
         matrix[this.y][this.x] = 0;
-        for (var i in grenades) {
-            if (!(this.x == grenades[i].x && this.y == grenades[i].y)) continue;
-            grenades.splice(i, 1);
+        for (var i in creatures.grenades) {
+            if (!(this.x == creatures.grenades[i].x && this.y == creatures.grenades[i].y)) continue;
+            creatures.grenades.splice(i, 1);
             break;
         }
     }
@@ -87,13 +87,13 @@ module.exports = class Grenade extends LivingCreature {
     }
 
     removeObject(x, y) {
-        for (const i in grassEaters) {
-            if (!(grassEaters[i].x == x && grassEaters[i].y == y)) continue;
-            grassEaters.splice(i, 1);
+        for (const i in creatures.grassEaters) {
+            if (!(creatures.grassEaters[i].x == x && creatures.grassEaters[i].y == y)) continue;
+            creatures.grassEaters.splice(i, 1);
         }
-        for (const i in predators) {
-            if (!(predators[i].x == x && predators[i].y == y)) continue;
-            predators.splice(i, 1);
+        for (const i in creatures.predators) {
+            if (!(creatures.predators[i].x == x && creatures.predators[i].y == y)) continue;
+            creatures.predators.splice(i, 1);
         }
     }
 

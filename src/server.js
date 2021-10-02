@@ -4,23 +4,16 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const fs = require("fs");
 
-const GameData = require("./classes/GameData");
-const Grass = require('./classes/Grass');
-const GrassEater = require('./classes/GrassEater');
-const Predator = require('./classes/Predator');
-const Destroyer = require('./classes/Destroyer');
-const Grenade = require('./classes/Grenade');
-const SeasonTheme = require('./classes/Season');
-const GameManager = require('./classes/GameManager');
-const random = require('./classes/RandomUtil');
+const CreaturesManager = require('./classes/util/CreaturesManager');
+const GameData = require("./classes/util/GameData");
+const SeasonTheme = require('./classes/util/Season');
+const GameManager = require('./classes/util/GameManager');
+
+const createMatrix = require('./classes/util/MatrixGenerator');
 
 gameData = new GameData();
+creatures = new CreaturesManager();
 matrix = [];
-grasses = [];
-grassEaters = [];
-predators = [];
-destroyers = [];
-grenades = [];
 
 seasonIndex = 0;
 seasonName = "Spring";
@@ -68,14 +61,10 @@ io.on('connection', function (socket) {
 function restart() {
 
     gameData = new GameData();
-    matrix = [];
-    grasses = [];
-    grassEaters = [];
-    predators = [];
-    destroyers = [];
-    grenades = [];
+    creatures.resetData();
     seasonIndex = 0;
     seasonName = "Spring";
+
     createMatrix(60, 100, 30, 20, 1, 5);
 
     game();
@@ -83,6 +72,8 @@ function restart() {
     let data = {
         matrix: matrix,
         gameData: gameData,
+        creatures: creatures,
+        chartForm: creatures.getChartForm(),
         seasonTheme: global.getSeasonTheme(),
         seasonName: seasonName
     };
@@ -94,7 +85,7 @@ function restart() {
 }
 
 function addGrass() {
-
+    
 }
 
 function addGrassEater() {
@@ -102,16 +93,14 @@ function addGrassEater() {
 }
 
 function game() {
-    
-    for (const i in grasses) grasses[i].mult();
-    for (const i in grassEaters) grassEaters[i].start();
-    for (const i in predators) predators[i].start();
-    for (const i in destroyers) destroyers[i].start();
-    for (const i in grenades) grenades[i].start();
+
+    creatures.start();
 
     let data = {
         matrix: matrix,
         gameData: gameData,
+        creatures: creatures,
+        chartForm: creatures.getChartForm(),
         seasonTheme: global.getSeasonTheme(),
         seasonName: seasonName
     };
@@ -139,47 +128,3 @@ function changeSeason() {
 setInterval(game, 1000);
 setInterval(writeStatistics, 250*60);
 setInterval(changeSeason, 5000);
-
-function createMatrix(size, grassesAmount, grassEatersAmount, predatorsAmount, destroyersAmount, grenadesAmount) {
-
-    for (let i = 0; i < size; i++) {
-        matrix[i] = [];
-        for (let j = 0; j < size; j++) matrix[i].push(0);
-    }
-
-    for (let i = 0; i < grassesAmount; i++) {
-        let x = random(size - 1);
-        let y = random(size - 1);
-        if (matrix[y][x] == 0) new Grass(x, y);
-        else i--;
-    }
-
-    for (let i = 0; i < grassEatersAmount; i++) {
-        let x = random(size - 1);
-        let y = random(size - 1);
-        if (matrix[y][x] == 0) new GrassEater(x, y);
-        else i--;
-    }
-
-    for (let i = 0; i < predatorsAmount; i++) {
-        let x = random(size - 1);
-        let y = random(size - 1);
-        if (matrix[y][x] == 0) new Predator(x, y);
-        else i--;
-    }
-
-    for (let i = 0; i < destroyersAmount; i++) {
-        let x = random(size - 1);
-        let y = random(size - 1);
-        if (matrix[y][x] == 0) new Destroyer(random(matrix.length - 1));
-        else i--;
-    }
-
-    for (let i = 0; i < grenadesAmount; i++) {
-        let x = random(size - 1);
-        let y = random(size - 1);
-        if (matrix[y][x] == 0) new Grenade(x, y);
-        else i--;
-    }
-
-}

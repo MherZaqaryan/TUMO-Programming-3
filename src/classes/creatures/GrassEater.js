@@ -1,13 +1,13 @@
-const random = require('./RandomUtil');
 const LivingCreature = require('./LivingCreature');
+const random = require('../util/Random');
 
 module.exports = class GrassEater extends LivingCreature {
 
     constructor(x, y) {
         super(x, y);
         this.energy = 10;
-        grassEaters.push(this);
         matrix[y][x] = 2;
+        creatures.addGrassEater(this);
         gameData.addGrassEater();
     }
 
@@ -60,9 +60,9 @@ module.exports = class GrassEater extends LivingCreature {
         let randIndex = random(foods.length - 1);
         let x = foods[randIndex][0];
         let y = foods[randIndex][1];
-        for (const i in grasses) {
-            if (!(grasses[i].x == x && grasses[i].y == y)) continue;
-            grasses.splice(i, 1);
+        for (const i in creatures.grasses) {
+            if (!(creatures.grasses[i].x == x && creatures.grasses[i].y == y)) continue;
+            creatures.grasses.splice(i, 1);
         }
         matrix[y][x] = 2;
         matrix[this.y][this.x] = 0;
@@ -86,9 +86,9 @@ module.exports = class GrassEater extends LivingCreature {
     remove() {
         if (this.energy > 0) return;
         matrix[this.y][this.x] = 0;
-        for (var i in grassEaters) {
-            if (!(this.x == grassEaters[i].x && this.y == grassEaters[i].y)) continue;
-            grassEaters.splice(i, 1);
+        for (var i in creatures.grassEaters) {
+            if (!(this.x == creatures.grassEaters[i].x && this.y == creatures.grassEaters[i].y)) continue;
+            creatures.grassEaters.splice(i, 1);
             break;
         }
     }
