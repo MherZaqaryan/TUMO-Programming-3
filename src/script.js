@@ -54,6 +54,7 @@ function setup() {
                 else if (matrix[y][x] == 3) fill(season.predatorColor);
                 else if (matrix[y][x] == 4) fill(season.destroyerColor);
                 else if (matrix[y][x] == 5) fill(season.grenadeColor);
+                else if (matrix[y][x] == 6) fill("#000000");
                 rect(x * side, y * side, side, side);
             }
         }

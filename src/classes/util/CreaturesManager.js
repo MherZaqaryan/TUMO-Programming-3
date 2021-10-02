@@ -6,6 +6,7 @@ module.exports = class CreaturesManager {
         this.predators = [];
         this.destroyers = [];
         this.grenades = [];
+        this.fires = [];
     }
 
     start() {
@@ -14,6 +15,7 @@ module.exports = class CreaturesManager {
         for (const i in this.predators) this.predators[i].start();
         for (const i in this.destroyers) this.destroyers[i].start();
         for (const i in this.grenades) this.grenades[i].start();
+        for (const i in this.fires) this.fires[i].start();
     }
 
     addGrass(grass) {
@@ -36,6 +38,10 @@ module.exports = class CreaturesManager {
         this.grenades.push(grenade);
     }
 
+    addFire(fire) {
+        this.fires.push(fire);
+    }
+
     getGrassesCount() {
         return this.grasses.length;
     }
@@ -56,13 +62,18 @@ module.exports = class CreaturesManager {
         return this.grenades.length;
     }
 
+    getFiresCount() {
+        return this.fires.length;
+    }
+
     getChartForm() {
         return {
             grass: this.getGrassesCount(),
             grassEater: this.getGrassEatersCount(),
             predator: this.getPredatorsCount(),
             destroyer: this.getDestroyersCount(),
-            grenade: this.getGrenadesCount()
+            grenade: this.getGrenadesCount(),
+            fire: this.getFiresCount()
         };
     }
 
@@ -72,6 +83,7 @@ module.exports = class CreaturesManager {
         this.predatos = [];
         this.destroyers = [];
         this.grenades = [];
+        this.fires = [];
     }
 
 }

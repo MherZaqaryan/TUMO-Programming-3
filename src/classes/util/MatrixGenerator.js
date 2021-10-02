@@ -4,8 +4,9 @@ const Predator = require('../creatures/Predator');
 const Destroyer = require('../creatures/Destroyer');
 const Grenade = require('../creatures/Grenade');
 const random = require('./Random');
+const Fire = require('../creatures/Fire');
 
-module.exports = function createMatrix(size, grassesAmount, grassEatersAmount, predatorsAmount, destroyersAmount, grenadesAmount) {
+module.exports = function createMatrix(size, grassesAmount, grassEatersAmount, predatorsAmount, destroyersAmount, grenadesAmount, firesAmount) {
 
     for (let i = 0; i < size; i++) {
         matrix[i] = [];
@@ -44,6 +45,13 @@ module.exports = function createMatrix(size, grassesAmount, grassEatersAmount, p
         let x = random(size - 1);
         let y = random(size - 1);
         if (matrix[y][x] == 0) new Grenade(x, y);
+        else i--;
+    }
+
+    for (let i = 0; i < firesAmount; i++) {
+        let x = random(size - 1);
+        let y = random(size - 1);
+        if (matrix[y][x] == 0) new Fire(x, y);
         else i--;
     }
 

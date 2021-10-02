@@ -6,6 +6,7 @@ module.exports = class GameData {
         this.predatorCount = 0;
         this.destroyerCount = 0;
         this.grenadeCount = 0;
+        this.fireCount = 0;
     }
 
     addGrass() {
@@ -26,6 +27,10 @@ module.exports = class GameData {
 
     addGrenade() {
         this.grenadeCount++;
+    }
+
+    addFire() {
+        this.fireCount++;
     }
 
 }

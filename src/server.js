@@ -51,7 +51,7 @@ global.getGameManager = function() {
 }
 
 io.on('connection', function (socket) {
-    createMatrix(60, 100, 30, 20, 1, 5);
+    createMatrix(60, 100, 30, 20, 1, 5, 3);
     socket.on("restart", restart);
     socket.on("addGrass", addGrass);
     socket.on("addGrassEater", addGrassEater);
@@ -65,7 +65,7 @@ function restart() {
     seasonIndex = 0;
     seasonName = "Spring";
 
-    createMatrix(60, 100, 30, 20, 1, 5);
+    createMatrix(60, 100, 30, 20, 1, 5, 3);
 
     game();
 
@@ -85,7 +85,7 @@ function restart() {
 }
 
 function addGrass() {
-    
+
 }
 
 function addGrassEater() {
