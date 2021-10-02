@@ -23,6 +23,7 @@ destroyers = [];
 grenades = [];
 
 seasonIndex = 0;
+seasonName = "Spring";
 
 seasonThemes = [
     new SeasonTheme("#0ac900","#e1ff00","#ff0066","#0341fc","#fc7703"), // Spring
@@ -47,6 +48,97 @@ app.get('/', function(req, res) {
 server.listen(3000, function() {
     console.log("Server has started.")
 });
+
+global.getSeasonTheme = function() {
+    return seasonThemes[seasonIndex];
+}
+
+global.getGameManager = function() {
+    return gameManagers[seasonIndex];
+}
+
+io.on('connection', function (socket) {
+    createMatrix(60, 100, 30, 20, 1, 5);
+    socket.on("restart", restart);
+    socket.on("addGrass", addGrass);
+    socket.on("addGrassEater", addGrassEater);
+    socket.on("changeSeason", changeSeason);
+});
+
+function restart() {
+
+    gameData = new GameData();
+    matrix = [];
+    grasses = [];
+    grassEaters = [];
+    predators = [];
+    destroyers = [];
+    grenades = [];
+    seasonIndex = 0;
+    seasonName = "Spring";
+    createMatrix(60, 100, 30, 20, 1, 5);
+
+    game();
+
+    let data = {
+        matrix: matrix,
+        gameData: gameData,
+        seasonTheme: global.getSeasonTheme(),
+        seasonName: seasonName
+    };
+
+    io.sockets.emit("matrix", data);
+
+    console.log("Game Restarted.");
+
+}
+
+function addGrass() {
+
+}
+
+function addGrassEater() {
+
+}
+
+function game() {
+    
+    for (const i in grasses) grasses[i].mult();
+    for (const i in grassEaters) grassEaters[i].start();
+    for (const i in predators) predators[i].start();
+    for (const i in destroyers) destroyers[i].start();
+    for (const i in grenades) grenades[i].start();
+
+    let data = {
+        matrix: matrix,
+        gameData: gameData,
+        seasonTheme: global.getSeasonTheme(),
+        seasonName: seasonName
+    };
+
+    io.sockets.emit("matrix", data);
+    
+}
+
+function writeStatistics() {
+    fs.writeFile("statistics.json", JSON.stringify(gameData), function() {
+        console.log("Statistics Updated.");
+    });
+}
+
+function changeSeason() {
+    seasonIndex++
+    if (seasonIndex >= seasonThemes.length) seasonIndex = 0;
+    seasonName = "Spring";
+    if (seasonIndex == 1) seasonName = "Summer";
+    if (seasonIndex == 2) seasonName = "Autumn";
+    if (seasonIndex == 3) seasonName = "Winter";
+    console.log("Season Changed To " + seasonName);
+}
+
+setInterval(game, 1000);
+setInterval(writeStatistics, 250*60);
+setInterval(changeSeason, 5000);
 
 function createMatrix(size, grassesAmount, grassEatersAmount, predatorsAmount, destroyersAmount, grenadesAmount) {
 
@@ -91,78 +183,3 @@ function createMatrix(size, grassesAmount, grassEatersAmount, predatorsAmount, d
     }
 
 }
-
-global.getSeasonTheme = function() {
-    return seasonThemes[seasonIndex];
-}
-
-global.getGameManager = function() {
-    return gameManagers[seasonIndex];
-}
-
-function game() {
-    
-    for (const i in grasses) grasses[i].mult();
-    for (const i in grassEaters) grassEaters[i].start();
-    for (const i in predators) predators[i].start();
-    for (const i in destroyers) destroyers[i].start();
-    for (const i in grenades) grenades[i].start();
-
-    let data = {
-        matrix: matrix,
-        gameData: gameData,
-        seasonTheme: global.getSeasonTheme()
-    };
-
-    io.sockets.emit("data", data);
-    
-}
-
-io.on('connection', function (socket) {
-    createMatrix(60, 100, 30, 20, 1, 5);
-    socket.on("restart", restart);
-});
-
-function restart() {
-
-    gameData = new GameData();
-    matrix = [];
-    grasses = [];
-    grassEaters = [];
-    predators = [];
-    destroyers = [];
-    grenades = [];
-    createMatrix(60, 100, 30, 20, 1, 5);
-    game();
-
-    let data = {
-        matrix: matrix,
-        gameData: gameData,
-        seasonTheme: global.getSeasonTheme()
-    };
-
-    io.sockets.emit("data", data);
-
-    console.log("Game Restarted.");
-
-}
-
-function writeStatistics() {
-    fs.writeFile("statistics.json", JSON.stringify(gameData), function() {
-        console.log("Statistics Updated.");
-    });
-}
-
-function changeSeason() {
-    seasonIndex++
-    if (seasonIndex >= seasonThemes.length) seasonIndex = 0;
-    let seasonName = "Spring";
-    if (seasonIndex == 1) seasonName = "Summer";
-    if (seasonIndex == 2) seasonName = "Autumn";
-    if (seasonIndex == 3) seasonName = "Winter";
-    console.log("Season Changed To " + seasonName);
-}
-
-setInterval(game, 75);
-setInterval(writeStatistics, 250*60);
-setInterval(changeSeason, 5000);

@@ -51,6 +51,7 @@ h1, h3 {
 }
 
 .event-button {
+    text-decoration: none;
     outline: none;
     cursor: pointer;
     background-color: #ffffff;
@@ -75,10 +76,17 @@ h1, h3 {
     display: flex;
     flex-direction: column;
     text-align: center;
-    margin: 0 10px;
+    margin: 0 0 0 43px;
 
 }
 
 .game {
     margin: 0 10px;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    /* margin: 0 10px; */
 }

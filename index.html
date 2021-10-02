@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="./src/style.css">
     <script src="./libraries/p5.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="./src/script.js"></script>
     <title>Tumo Programming 3</title>
 </head>
@@ -17,49 +18,43 @@
             <div class="table-container">
                 <table class="game">
                     <tr>
-                        <th scope="col"># </th>
-                        <th scope="col">Գույն</th>
-                        <th scope="col">Անուն</th>
-                        <!-- <th scope="col">Նկարագրություն</th> -->
-                        <th scope="col">Ծնվել է</th>
+                        <th scope="col" style="width: 30px;">#</th>
+                        <th scope="col">Color</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Count</th>
                     </tr>
                     <tr>
-                        <td scope="row">1</td>
+                        <td scope="row" style="width: 30px;">1</td>
                         <td scope="row" style="background-color:#0ac900;"></td>
-                        <td scope="row">Խոտ</td>
-                        <!-- <td>Բազմանում է 2 ցիկլը մեկ, մահանում է երբ նրան ուտում է խոտակերը, կամ սպանում է կործանիչը, կամ նրան պայտեցնում է նռնակը։</td> -->
+                        <td scope="row">Grass</td>
                         <td id="grassCount"></td>
                     </tr>
                     <tr>
-                        <td scope="row">2</td>
+                        <td scope="row" style="width: 30px;">2</td>
                         <td scope="row" style="background-color:#e1ff00;"></td>
-                        <td scope="row">Խոտակեր</td>
-                        <!-- <td>Բազմանում է երբ իր եներգիան մեծամում է 30-ից և մահանում է երբ եներգիան հասնում է 0-ի, կամ երբ նրան ուտում է գիշատիչը կամ սպանում է կործանիչը, կամ նրան պայտեցնում է նռնակը։</td> -->
+                        <td scope="row">Grass Eater</td>
                         <td id="grassEaterCount"></td>
                     </tr>
                     <tr>
-                        <td scope="row">3</td>
+                        <td scope="row" style="width: 30px;">3</td>
                         <td scope="row" style="background-color:#ff0066;"></td>
-                        <td scope="row">Գիշատիչ</td>
-                        <!-- <td>Բազմանում է երբ իր եներգիան մեծամում է 30-ից և մահանում է երբ կորցնում է եներգիան, կամ սպանում է կործանիչը, կամ նրան պայտեցնում է նռնակը։</td> -->
+                        <td scope="row">Predator</td>
                         <td id="predatorCount"></td>
                     </tr>
                     <tr>
-                        <td scope="row">4</td>
+                        <td scope="row" style="width: 30px;">4</td>
                         <td scope="row" style="background-color:#0341fc;"></td>
-                        <td scope="row">Կործանիչ</td>
-                        <!-- <td>Ծնվում է ամեն 20 տակտ, ոչինչացնում է ամեն ինչ պատահական Y կետի շրջակա 5 տողում, մահանում է ծնվելուց 5 տակտ հետո։</td> -->
+                        <td scope="row">Destroyer</td>
                         <td id="destroyerCount"></td>
                     </tr>
                     <tr>
-                        <td scope="row" width='100px'>5</td>
+                        <td scope="row" style="width: 30px;">5</td>
                         <td scope="row" style="background-color:#fc7703;"></td>
-                        <td scope="row">Նռնակ</td>
-                        <!-- <td>Ծնվում իր նախորդի պայտեցնումից հետո, մահանում է պայթյունից հետո, ոչինչացնում է ամեն ինչ իր շրջակա 16 վանդակներում։</td> -->
+                        <td scope="row">Grenade</td>
                         <td id="grenadeCount"></td>
                     </tr>
                     <tr>
-                        <td scope="row">6</td>
+                        <td scope="row" style="width: 30px;">6</td>
                         <td scope="row" style="background-color:#000000;"></td>
                         <td scope="row"></td>
                         <td id=""></td>
@@ -68,10 +63,14 @@
             </div>
             <div class="events-container">
                 <h4>Events Panel</h4>
-                <button class="event-button" onclick="restart()">Restart</button>
-                <button class="event-button" onclick="restart()">Remove Grasses</button>
-                <button class="event-button" onclick="restart()">Remove Grass Eaters</button>
-                <button class="event-button" onclick="restart()">Remove Mutants</button>
+                <a class="event-button" onclick="restart()">Restart</a>
+                <a class="event-button" onclick="addGrass()">Add Grass</a>
+                <a class="event-button" onclick="addGrassEater()">Add Grass Eater</a>
+                <a class="event-button" onclick="changeSeason()">Change Season</a>
+            </div>
+            <div class="info-container">
+                <h4 id ="weather">Season: Spring</h4>
+                <svg width="300" height="200"></svg>
             </div>
         </div>
         <div class="footer">
