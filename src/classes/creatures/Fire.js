@@ -10,38 +10,54 @@ module.exports = class Fire extends LivingCreature {
                 this.directions.push([i, j]);
             }
         }
-        this.ququedCells = [...this.directions];
+        this.burnedCells = [];
         creatures.addFire(this);
         gameData.addFire();
     }
 
     start() {
-        this.burn();
+        if (this.burnedCells.length >= 20) {
+            this.remove();
+            this.mult();
+        } else {
+            this.burn();
+        }
     }
 
     burn() {
-        if (this.ququedCells.length <= 0) {
+        if (this.directions.length <= 0) {
             this.remove();
             return;
         }
-        let randIndex = Random(this.ququedCells.length - 1);
-        let x = this.ququedCells[randIndex][0];
-        let y = this.ququedCells[randIndex][1];
+        let randIndex = Random(this.directions.length - 1);
+        let x = this.directions[randIndex][0];
+        let y = this.directions[randIndex][1];
         if (!(x >= 0 && y >= 0 && x < matrix.length && y < matrix.length)) return;
         if ([0,1,2,3].includes(matrix[y][x])) {
-            this.ququedCells.splice(randIndex, 1);
+            this.burnedCells.push(this.directions[randIndex]);
             this.removeObject(x, y);
             matrix[y][x] = 6;
         }
     }
 
     remove() {
-        if (this.ququedCells.length > 20) return;
-        
+        if (this.burnedCells.length < 20) return;
+        for (const i in this.burnedCells) {
+            let x = this.burnedCells[i][0];
+            let y = this.burnedCells[i][1];
+            matrix[y][x] = 0;
+        }
+        for (var i in creatures.fires) {
+            if (!(this.x == creatures.fires[i].x && this.y == creatures.fires[i].y)) continue;
+            creatures.fires.splice(i, 1);
+            break;
+        }
     }
 
     mult() {
-
+        let x = Random(matrix.length - 1);
+        let y = Random(matrix.length - 1);
+        if ([0,1,2,3].includes(matrix[y][x])) new Fire(x, y);
     }
 
     removeObject(x, y) {
