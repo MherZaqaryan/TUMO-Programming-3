@@ -85,7 +85,7 @@ function restart() {
 }
 
 function addGrass() {
-
+    
 }
 
 function addGrassEater() {
