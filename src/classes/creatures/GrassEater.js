@@ -31,22 +31,23 @@ module.exports = class GrassEater extends LivingCreature {
 
     start() {
         if (this.chooseCell(1).length > 0) {
-            this.eat()
+            this.eat();
         }
         else if (this.chooseCell(0).length > 0) {
-            this.move()
+            this.move();
         }
         if (this.energy >= 10) {
-            this.mult()
+            this.mult();
         }
         if (this.energy <= 0) {
-            this.remove()
+            this.remove();
         }
     }
 
     mult() {
-        if (this.energy < 30) return;
+        if (this.energy < global.getGameManager().grassEaterMinRequiredEnergy) return;
         var emptyCells = this.chooseCell(0);
+        if (emptyCells.length == 0) return;
         var randIndex = random(emptyCells.length - 1);
         let x = emptyCells[randIndex][0];
         let y = emptyCells[randIndex][1];
@@ -66,7 +67,7 @@ module.exports = class GrassEater extends LivingCreature {
         }
         matrix[y][x] = 2;
         matrix[this.y][this.x] = 0;
-        this.energy += 3;
+        this.energy += global.getGameManager().grassEaterPerEatEnergy;
         this.x = x;
         this.y = y;
     }

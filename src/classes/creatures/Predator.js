@@ -56,7 +56,7 @@ module.exports = class Predator extends LivingCreature {
         matrix[this.y][this.x] = 0;
         this.x = x;
         this.y = y;
-        this.energy -= 1;
+        this.energy -= global.getGameManager().predatorPerMoveEnergy;
     }
 
     eat() {
@@ -70,7 +70,7 @@ module.exports = class Predator extends LivingCreature {
         }
         matrix[y][x] = 3;
         matrix[this.y][this.x] = 0;
-        this.energy += 2;
+        this.energy += global.getGameManager().predatorPerEatEnergy;
         this.x = x;
         this.y = y;
     }

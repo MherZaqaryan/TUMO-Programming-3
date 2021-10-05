@@ -12,7 +12,7 @@ module.exports = class Grass extends LivingCreature {
     }
 
     mult() {
-        let multiplication = gameManagers[seasonIndex].grassMultiplication;
+        let multiplication = global.getGameManager().grassMultiplication;
         if (multiplication <= 0) return;
         this.multiplay++;
         if (this.multiplay < this.multiplication) return;

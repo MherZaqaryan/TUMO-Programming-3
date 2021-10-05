@@ -19,42 +19,43 @@ seasonIndex = 0;
 seasonName = "Spring";
 
 seasonThemes = [
-    new SeasonTheme("#0ac900","#e1ff00","#ff0066","#0341fc","#fc7703"), // Spring
-    new SeasonTheme("#00ff2a","#ffd000","#fc0303","#0341fc","#fc7703"), // Summer
-    new SeasonTheme("#b3ee3a","#f4fc03","#fc0303","#0341fc","#fc7703"), // Autumn
-    new SeasonTheme("#fff0f0","#f4fc03","#fc0303","#0341fc","#fc7703") // Winter
+    new SeasonTheme("#0ac900", "#e1ff00", "#ff0066", "#0341fc", "#fc7703", "#690000"), // Spring
+    new SeasonTheme("#03a800", "#6ead00", "#fc0303", "#1226ff", "#fc7703", "#690000"), // Summer
+    new SeasonTheme("#b3ee3a", "#f4fc03", "#db0016", "#034efc", "#fc7703", "#690000"), // Autumn
+    new SeasonTheme("#fff0f0", "#f4fc03", "#b50012", "#0318fc", "#fc7703", "#690000") // Winter
 ];
 
 gameManagers = [
-    new GameManager(2),
-    new GameManager(3),
-    new GameManager(1),
-    new GameManager(0)
+    new GameManager(2, 30, 3, 2, 1), // Spring
+    new GameManager(3, 25, 2, 4, 2), // Summer
+    new GameManager(1, 20, 1, 6, 3), // Autumn
+    new GameManager(0, 20, 2, 4, 0) // Winter
 ];
 
 app.use(express.static("."));
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     res.redirect('./index.html');
-}); 
+});
 
-server.listen(3000, function() {
+server.listen(3000, function () {
     console.log("Server has started.")
 });
 
-global.getSeasonTheme = function() {
+global.getSeasonTheme = function () {
     return seasonThemes[seasonIndex];
 }
 
-global.getGameManager = function() {
+global.getGameManager = function () {
     return gameManagers[seasonIndex];
 }
 
 io.on('connection', function (socket) {
-    createMatrix(60, 100, 30, 20, 1, 5, 3);
+    createMatrix(60, 100, 30, 20, 1, 5, 2);
     socket.on("restart", restart);
     socket.on("addGrass", addGrass);
     socket.on("addGrassEater", addGrassEater);
+    socket.on("addPredator", addPredator);
     socket.on("changeSeason", changeSeason);
 });
 
@@ -65,7 +66,7 @@ function restart() {
     seasonIndex = 0;
     seasonName = "Spring";
 
-    createMatrix(60, 100, 30, 20, 1, 5, 3);
+    createMatrix(60, 100, 30, 20, 1, 5, 2);
 
     game();
 
@@ -85,11 +86,15 @@ function restart() {
 }
 
 function addGrass() {
-    
+    creatures.addGrassCreature(10);
 }
 
 function addGrassEater() {
+    creatures.addGrassEaterCreature(10);
+}
 
+function addPredator() {
+    creatures.addPredatorCreature(10);
 }
 
 function game() {
@@ -106,11 +111,11 @@ function game() {
     };
 
     io.sockets.emit("matrix", data);
-    
+
 }
 
 function writeStatistics() {
-    fs.writeFile("statistics.json", JSON.stringify(gameData), function() {
+    fs.writeFile("statistics.json", JSON.stringify(gameData), function () {
         console.log("Statistics Updated.");
     });
 }
@@ -126,5 +131,5 @@ function changeSeason() {
 }
 
 setInterval(game, 1000);
-setInterval(writeStatistics, 250*60);
+setInterval(writeStatistics, 250 * 60);
 setInterval(changeSeason, 5000);

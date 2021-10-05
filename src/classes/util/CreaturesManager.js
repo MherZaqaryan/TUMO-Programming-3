@@ -1,3 +1,8 @@
+const Grass = require("../creatures/Grass");
+const GrassEater = require("../creatures/GrassEater");
+const Predator = require("../creatures/Predator");
+const Random = require('../util/Random');
+
 module.exports = class CreaturesManager {
 
     constructor() {
@@ -84,6 +89,36 @@ module.exports = class CreaturesManager {
         this.destroyers = [];
         this.grenades = [];
         this.fires = [];
+    }
+    
+    addGrassCreature(count) {
+        let size = matrix.length - 1;
+        for (let i = 0; i < count; i++) {
+            let x = Random(size),
+                y = Random(size);
+            if (matrix[y][x] == 0) new Grass(x, y);
+            else i--;
+        }
+    }
+
+    addGrassEaterCreature(count) {
+        let size = matrix.length - 1;
+        for (let i = 0; i < count; i++) {
+            let x = Random(size),
+                y = Random(size);
+            if (matrix[y][x] == 0) new GrassEater(x, y);
+            else i--;
+        }
+    }
+
+    addPredatorCreature(count) {
+        let size = matrix.length - 1;
+        for (let i = 0; i < count; i++) {
+            let x = Random(size),
+                y = Random(size);
+            if (matrix[y][x] == 0) new Predator(x, y);
+            else i--;
+        }
     }
 
 }
