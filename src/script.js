@@ -64,7 +64,7 @@ function setup() {
                 else if (matrix[y][x] == 3) fill(season.predatorColor);
                 else if (matrix[y][x] == 4) fill(season.destroyerColor);
                 else if (matrix[y][x] == 5) fill(season.grenadeColor);
-                else if (matrix[y][x] == 6) fill("#690000");
+                else if (matrix[y][x] == 6) fill(season.fireColor);
                 rect(x * side, y * side, side, side);
             }
         }
@@ -138,6 +138,10 @@ function addGrass() {
 
 function addGrassEater() {
     socket.emit("addGrassEater");
+}
+
+function addPredator() {
+    socket.emit("addPredator");
 }
 
 function changeSeason() {
