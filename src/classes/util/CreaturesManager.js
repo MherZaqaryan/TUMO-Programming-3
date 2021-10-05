@@ -80,7 +80,7 @@ module.exports = class CreaturesManager {
     resetData() {
         this.grasses = [];
         this.grassEaters = [];
-        this.predatos = [];
+        this.predators = [];
         this.destroyers = [];
         this.grenades = [];
         this.fires = [];

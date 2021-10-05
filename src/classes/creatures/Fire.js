@@ -1,7 +1,7 @@
 const Random = require("../util/Random");
 const LivingCreature = require("./LivingCreature");
 
-module.exports = class Fire extends LivingCreature { 
+module.exports = class Fire extends LivingCreature {
 
     constructor(x, y) {
         super(x, y);
@@ -10,38 +10,52 @@ module.exports = class Fire extends LivingCreature {
                 this.directions.push([i, j]);
             }
         }
-        this.ququedCells = [...this.directions];
+        this.burnedCells = [];
         creatures.addFire(this);
         gameData.addFire();
     }
 
     start() {
-        this.burn();
+        this.remove();
+        if (this.burnedCells.length > 20) {
+            this.remove();
+        }
+        else { 
+            this.burn();
+        }
     }
 
     burn() {
-        if (this.ququedCells.length <= 0) {
-            this.remove();
-            return;
-        }
-        let randIndex = Random(this.ququedCells.length - 1);
-        let x = this.ququedCells[randIndex][0];
-        let y = this.ququedCells[randIndex][1];
+        let randIndex = Random(this.directions.length - 1);
+        let x = this.directions[randIndex][0];
+        let y = this.directions[randIndex][1];
         if (!(x >= 0 && y >= 0 && x < matrix.length && y < matrix.length)) return;
-        if ([0,1,2,3].includes(matrix[y][x])) {
-            this.ququedCells.splice(randIndex, 1);
-            this.removeObject(x, y);
-            matrix[y][x] = 6;
-        }
+        if (![0, 1, 2, 3].includes(matrix[y][x])) return;
+        this.burnedCells.push([x, y]);
+        this.removeObject(x, y);
+        matrix[y][x] = 6;
     }
 
     remove() {
-        if (this.ququedCells.length > 20) return;
-        
+        if (this.burnedCells.length < 20) return;
+        for (const i in this.burnedCells) {
+            matrix[this.burnedCells[i][1]][this.burnedCells[i][0]] = 0;
+        }
+        for (var i in creatures.fires) {
+            if (!(this.x == creatures.fires[i].x && this.y == creatures.fires[i].y)) continue;
+            creatures.fires.splice(i, 1);
+            break;
+        }
+        this.mult();
     }
 
     mult() {
-
+        let cells = super.chooseCell(0, 1, 2, 3);
+        if (cells.length == 0) return;
+        let randIndex = Random(cells.length - 1);
+        let x = cells[randIndex][0];
+        let y = cells[randIndex][1];
+        new Fire(x, y);
     }
 
     removeObject(x, y) {
